@@ -4,6 +4,7 @@
 typedef struct List{
     struct Node * first;
     struct Node * last;
+    int length;
 } List;
 
 typedef struct Node{

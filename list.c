@@ -5,6 +5,7 @@ List * newList(){
     *list = (List){0};
     list->first = NULL;
     list->last = NULL;
+    list->length = 0;
     return list;
 }
 
@@ -25,6 +26,7 @@ void addToList(List * list, int page, char rw){
 		list->last->next = newNode(page,rw);
         list->last = list->last->next;
 	}
+    list->length++;
 }
 
 void emptyList(List * list){
@@ -36,9 +38,14 @@ void emptyList(List * list){
 
     list->first = NULL;
     list->last = NULL;
+    list->length = 0;
 }
 
 int isInList(List * list, int page){
+    if(list == NULL){
+        printf("bruh\n");
+        return 0;
+    }
     if(list->first == NULL){
         return 0;
     }
@@ -77,6 +84,7 @@ void printList(List * list){
         return;
     }
 
+    printf("Length: %d\n", list->length);
     Node * node = list->first;
     while(node != NULL){
         printf("%d %d\n", node->dirty, node->page);
