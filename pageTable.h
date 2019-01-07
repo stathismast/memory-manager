@@ -8,5 +8,6 @@ typedef struct PageTable{
 
 PageTable * newPageTable(int size, int k);
 void printPageTable(PageTable * pt);
-void addToPageTable(PageTable * pt, int page, char rw);
+void flushPageTable(PageTable * pt, int pid);
+void addToPageTable(PageTable * pt, int page, char rw, int pid);
 void deletePageTable(PageTable * pt);

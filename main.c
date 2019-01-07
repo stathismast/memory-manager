@@ -25,16 +25,17 @@ int main(int argc, char *argv[]){
 
     int bzipCount = 0;
     int gccCount = 0;
+    printf("k %d    q %d    max %d\n", k, q, max);
     for(int i=0; i<2*max; i++){
         if((i/q)%2 == 0){
-            addToPageTable(pt, bzip[bzipCount].page, bzip[bzipCount].rw);
+            addToPageTable(pt, bzip[bzipCount].page, bzip[bzipCount].rw, 0);
             bzipCount++;
-            printf("bzip %d %d\n", i, bzipCount);
+            // printf("bzip %d %d - page %d\n", i, bzipCount, bzip[bzipCount-1].page);
         }
         else{
-            addToPageTable(pt, gcc[gccCount].page, gcc[gccCount].rw);
+            addToPageTable(pt, gcc[gccCount].page, gcc[gccCount].rw, 1);
             gccCount++;
-            printf("gcc %d %d\n", i, gccCount);
+            // printf("gcc %d %d - page %d\n", i, gccCount, gcc[gccCount-1].page);
         }
     }
     printPageTable(pt);

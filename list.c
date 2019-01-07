@@ -9,21 +9,22 @@ List * newList(){
     return list;
 }
 
-Node * newNode(int page, char rw){
+Node * newNode(int page, char rw, int pid){
     Node * node = malloc(sizeof(Node));
     node->page = page;
     node->dirty = 0;
+    node->pid = pid;
     node->next = NULL;
     return node;
 }
 
-void addToList(List * list, int page, char rw){
+void addToList(List * list, int page, char rw, int pid){
     if(list->first == NULL){
-        list->first = newNode(page,rw);
+        list->first = newNode(page,rw,pid);
         list->last = list->first;
     }
 	else{
-		list->last->next = newNode(page,rw);
+		list->last->next = newNode(page,rw,pid);
         list->last = list->last->next;
 	}
     list->length++;
@@ -41,11 +42,28 @@ void emptyList(List * list){
     list->length = 0;
 }
 
-int isInList(List * list, int page){
-    if(list == NULL){
-        printf("bruh\n");
-        return 0;
+// Flush all the pages of a certain process from the given list
+void flushList(List * list, int pid){
+    if(list->first == NULL){
+        return;
     }
+
+    Node ** ptr = &list->first;
+
+    while(*ptr != NULL){
+        if((*ptr)->pid == pid){
+            Node * temp = (*ptr)->next;
+            free(*ptr);
+            *ptr = temp;
+            list->length--;
+        }
+        else{
+            ptr = &(*ptr)->next;
+        }
+    }
+}
+
+int isInList(List * list, int page){
     if(list->first == NULL){
         return 0;
     }
@@ -87,7 +105,7 @@ void printList(List * list){
     printf("Length: %d\n", list->length);
     Node * node = list->first;
     while(node != NULL){
-        printf("%d %d\n", node->dirty, node->page);
+        printf("%d. %d %d\n", node->pid, node->dirty, node->page);
         node = node->next;
     }
 }

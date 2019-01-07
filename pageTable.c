@@ -2,7 +2,7 @@
 
 int reads = 0;
 int writes = 0;
-int pageFaults = 0;
+int pageFaults[2] = {0};
 
 PageTable * newPageTable(int size, int k){
     PageTable * pt = malloc(sizeof(PageTable));
@@ -23,16 +23,16 @@ void printPageTable(PageTable * pt){
         printList(pt->table[i]);
     }
 
-    printf("\nReads: %d\nWrites: %d\nPage Faults: %d\n", reads, writes, pageFaults);
+    printf("\nReads: %d\nWrites: %d\nPage Faults: %d & %d\n", reads, writes, pageFaults[0], pageFaults[1]);
 }
 
-void flushPageTable(PageTable * pt){
+void flushPageTable(PageTable * pt, int pid){
     for(int i=0; i<pt->size; i++){
-        emptyList(pt->table[i]);
+        flushList(pt->table[i], pid);
     }
 }
 
-void addToPageTable(PageTable * pt, int page, char rw){
+void addToPageTable(PageTable * pt, int page, char rw, int pid){
     int index = (unsigned int) page % pt->size;
 
     if(isInList(pt->table[index], page)){
@@ -41,14 +41,14 @@ void addToPageTable(PageTable * pt, int page, char rw){
     else{
         // printf("%d is not in index %d. Page fault.\n", page, index);
 
-        if(pageFaults % pt->k == 0){
-            printf("Reached %d page faults. Flushing...\n", pageFaults);
-            flushPageTable(pt);
+        if(pageFaults[pid] % pt->k == 0 && pageFaults[pid] != 0){
+            printf("Reached %d page faults for pid=%d. Flushing...\n", pageFaults[pid], pid);
+            flushPageTable(pt, pid);
             // printPageTable(pt);
         }
 
-        addToList(pt->table[index], page, rw);
-        pageFaults++;
+        addToList(pt->table[index], page, rw, pid);
+        pageFaults[pid]++;
     }
 
     if(rw == 'W'){
