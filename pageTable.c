@@ -28,7 +28,7 @@ void printPageTable(PageTable * pt){
 
 void flushPageTable(PageTable * pt, int pid){
     for(int i=0; i<pt->size; i++){
-        flushList(pt->table[i], pid);
+        pt->table[i] = flushList(pt->table[i], pid);
     }
 }
 

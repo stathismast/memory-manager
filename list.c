@@ -43,24 +43,29 @@ void emptyList(List * list){
 }
 
 // Flush all the pages of a certain process from the given list
-void flushList(List * list, int pid){
+List * flushList(List * list, int pid){
     if(list->first == NULL){
-        return;
+        return list;
     }
 
-    Node ** ptr = &list->first;
+    List * flushed = newList();
 
-    while(*ptr != NULL){
-        if((*ptr)->pid == pid){
-            Node * temp = (*ptr)->next;
-            free(*ptr);
-            *ptr = temp;
-            list->length--;
+    Node * node = list->first;
+    while(node != NULL){
+        if(node->pid != pid){
+            char rw;
+            if(node->dirty == 1)
+                rw = 'W';
+            else rw = 'R';
+            addToList(flushed, node->page, rw, node->pid);
         }
-        else{
-            ptr = &(*ptr)->next;
-        }
+        node = node->next;
     }
+
+    deleteNodes(list->first);
+    free(list);
+
+    return flushed;
 }
 
 int isInList(List * list, int page){

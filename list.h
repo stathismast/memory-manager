@@ -18,7 +18,7 @@ List * newList();
 Node * newNode(int part, char rw, int pid);
 void addToList(List * list, int part, char rw, int pid);
 void emptyList(List * list);
-void flushList(List * list, int pid);
+List * flushList(List * list, int pid);
 int isInList(List * list, int page);
 void changeDirtyBit(List * list, int page);
 void deleteNodes(Node * node);
