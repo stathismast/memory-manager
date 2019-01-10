@@ -18,6 +18,15 @@ Node * newNode(int page, char rw, int pid){
     return node;
 }
 
+Node * copyNode(Node * original){
+    Node * node = malloc(sizeof(Node));
+    node->page = original->page;
+    node->dirty = original->dirty;
+    node->pid = original->pid;
+    node->next = NULL;
+    return node;
+}
+
 void addToList(List * list, int page, char rw, int pid){
     if(list->first == NULL){
         list->first = newNode(page,rw,pid);
@@ -25,6 +34,18 @@ void addToList(List * list, int page, char rw, int pid){
     }
 	else{
 		list->last->next = newNode(page,rw,pid);
+        list->last = list->last->next;
+	}
+    list->length++;
+}
+
+void addNodeToList(List * list, Node * node){
+    if(list->first == NULL){
+        list->first = copyNode(node);
+        list->last = list->first;
+    }
+	else{
+		list->last->next = copyNode(node);
         list->last = list->last->next;
 	}
     list->length++;
@@ -53,11 +74,7 @@ List * flushList(List * list, int pid){
     Node * node = list->first;
     while(node != NULL){
         if(node->pid != pid){
-            char rw;
-            if(node->dirty == 1)
-                rw = 'W';
-            else rw = 'R';
-            addToList(flushed, node->page, rw, node->pid);
+            addNodeToList(flushed, node);
         }
         node = node->next;
     }

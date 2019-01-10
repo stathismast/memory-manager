@@ -16,7 +16,9 @@ typedef struct Node{
 
 List * newList();
 Node * newNode(int part, char rw, int pid);
+Node * copyNode(Node * original);
 void addToList(List * list, int part, char rw, int pid);
+void addNodeToList(List * list, Node * node);
 void emptyList(List * list);
 List * flushList(List * list, int pid);
 int isInList(List * list, int page);
