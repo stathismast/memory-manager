@@ -1,5 +1,7 @@
 #include "list.h"
 
+extern int writeBacks[2];
+
 List * newList(){
     List * list = malloc(sizeof(List));
     *list = (List){0};
@@ -73,9 +75,10 @@ List * flushList(List * list, int pid){
 
     Node * node = list->first;
     while(node != NULL){
-        if(node->pid != pid){
+        if(node->pid != pid)
             addNodeToList(flushed, node);
-        }
+        else if(node->dirty == 1)
+            writeBacks[pid]++;
         node = node->next;
     }
 

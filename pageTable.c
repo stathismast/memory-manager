@@ -1,8 +1,10 @@
 #include "pageTable.h"
 
-int reads = 0;
-int writes = 0;
+int reads[2] = {0};
+int writes[2] = {0};
 int pageFaults[2] = {0};
+int flushes[2] = {0};
+int writeBacks[2] = {0};
 
 PageTable * newPageTable(int size, int k){
     PageTable * pt = malloc(sizeof(PageTable));
@@ -23,13 +25,16 @@ void printPageTable(PageTable * pt){
         printList(pt->table[i]);
     }
 
-    printf("\nReads: %d\nWrites: %d\nPage Faults: %d & %d\n", reads, writes, pageFaults[0], pageFaults[1]);
+    printf("\nProcess\t\tReads\t\tWrites\t\tPage Faults\tFlushes\t\tWrite Backs\n");
+    printf("bzip\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", reads[0], writes[0], pageFaults[0], flushes[0], writeBacks[0]);
+    printf("gcc\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", reads[1], writes[1], pageFaults[1], flushes[1], writeBacks[1]);
 }
 
 void flushPageTable(PageTable * pt, int pid){
     for(int i=0; i<pt->size; i++){
         pt->table[i] = flushList(pt->table[i], pid);
     }
+    flushes[pid]++;
 }
 
 void addToPageTable(PageTable * pt, int page, char rw, int pid){
@@ -53,9 +58,9 @@ void addToPageTable(PageTable * pt, int page, char rw, int pid){
 
     if(rw == 'W'){
         changeDirtyBit(pt->table[index], page);
-        writes++;
+        writes[pid]++;
     }
-    else reads++;
+    else reads[pid]++;
 }
 
 void deletePageTable(PageTable * pt){
