@@ -1,4 +1,4 @@
-#include "semaphores.h"
+#include "headers/semaphores.h"
 
 union semun{
     int val;

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "pageTable.h"
-#include "process.h"
+#include "headers/pageTable.h"
+#include "headers/process.h"
 
 // Global variables for command line arguments
 int k;

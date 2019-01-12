@@ -1,4 +1,4 @@
-#include "pageTable.h"
+#include "headers/pageTable.h"
 
 // Stats for both processes. Initialized to 0.
 int reads[2] = {0};

@@ -1,4 +1,4 @@
-#include "sharedMemory.h"
+#include "headers/sharedMemory.h"
 
 int shmCreate(key_t key, int size){
     return shmget(key,size,0644|IPC_CREAT);

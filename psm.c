@@ -1,4 +1,4 @@
-#include "psm.h"
+#include "headers/psm.h"
 #include <stdio.h>
 
 // Return a random number in the range [lowerLimit, upperLimit)

@@ -1,4 +1,4 @@
-#include "process.h"
+#include "headers/process.h"
 
 // Function for the process that reads through the trace files and send
 // the request through a shared memory segment protected by two semaphores
