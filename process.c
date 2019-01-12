@@ -3,7 +3,7 @@
 // Function for the process that reads through the trace files and send
 // the request through a shared memory segment protected by two semaphores
 void process(PSM * output, const char * file, int max){
-    Request * trace = createRequestArray(file);
+    Request * trace = createRequestArray(file, max);
 
     for(int i=0; i<max; i++){
         semDown(output->semEmpty);

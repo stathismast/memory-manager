@@ -7,5 +7,5 @@ typedef struct Request{
     int page;
 } Request;
 
-Request * createRequestArray(const char * file);
+Request * createRequestArray(const char * file, int max);
 void manageArguments(int argc, char * argv[]);

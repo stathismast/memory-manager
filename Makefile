@@ -1,6 +1,6 @@
 all:
 	@echo Compiling...
-	@gcc -g3 *.c
+	@gcc -g3 -O2 *.c
 
 clean:
 	@echo Cleaning...

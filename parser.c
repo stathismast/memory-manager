@@ -4,11 +4,11 @@ extern int k;
 extern int q;
 extern int max;
 
-Request * createRequestArray(const char * file){
+Request * createRequestArray(const char * file, int max){
 
     // Alocate space for each memory access. For each memeory access
     // we store the page it needs and whether its a read or write.
-    Request * requests = malloc(1000000 * sizeof(Request));
+    Request * requests = malloc(max * sizeof(Request));
 
     // Open and begin reading the file
     FILE * stream = fopen(file, "r");
@@ -16,7 +16,7 @@ Request * createRequestArray(const char * file){
     size_t len = 0;
 
     int count = 0;
-    while (getline(&line, &len, stream) != -1) {
+    while(getline(&line, &len, stream) != -1 && count < max) {
         
         // Parse each line to retreive the page each request
         // needs and whether its a read or write
