@@ -1,6 +1,19 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "pageTable.h"
-#include "parser.h"
+#include "psm.h"
+
+void process(PSM * output, const char * file, int max){
+    Request * trace = createRequestArray(file);
+
+    for(int i=0; i<max; i++){
+        semDown(output->semEmpty);
+            memcpy(output->sharedMemory,&trace[i],sizeof(Request));
+        semUp(output->semFull);
+    }
+
+    free(trace);
+}
 
 int main(int argc, char *argv[]){
     if(argc < 3){
@@ -18,29 +31,45 @@ int main(int argc, char *argv[]){
 
     if(q > max) q = max;
 
-    Request * bzip = createRequestArray("./traces/bzip.trace");
-    Request * gcc = createRequestArray("./traces/gcc.trace");
-
+    PSM * bzip = getPSM();
+    PSM * gcc = getPSM();
+    if(fork() == 0){
+        process(bzip, "./traces/bzip.trace", max);
+        free(bzip);
+        free(gcc);
+        exit(0);
+    }
+    if(fork() == 0){
+        process(gcc, "./traces/gcc.trace", max);
+        free(bzip);
+        free(gcc);
+        exit(0);
+    }
+    
     PageTable * pt = newPageTable(10, k);
 
-    int bzipCount = 0;
-    int gccCount = 0;
-    // printf("k %d    q %d    max %d\n", k, q, max);
+    Request req;
+
     for(int i=0; i<2*max; i++){
         if((i/q)%2 == 0){
-            addToPageTable(pt, bzip[bzipCount].page, bzip[bzipCount].rw, 0);
-            bzipCount++;
-            // printf("bzip %d %d - page %d\n", i, bzipCount, bzip[bzipCount-1].page);
+            semDown(bzip->semFull);
+                memcpy(&req,bzip->sharedMemory,sizeof(Request));
+            semUp(bzip->semEmpty);
+            addToPageTable(pt, req.page, req.rw, 0);
         }
         else{
-            addToPageTable(pt, gcc[gccCount].page, gcc[gccCount].rw, 1);
-            gccCount++;
-            // printf("gcc %d %d - page %d\n", i, gccCount, gcc[gccCount-1].page);
-        }
+            semDown(gcc->semFull);
+                memcpy(&req,gcc->sharedMemory,sizeof(Request));
+            semUp(gcc->semEmpty);
+            addToPageTable(pt, req.page, req.rw, 1);
+         }
     }
     printPageTable(pt);
 
     deletePageTable(pt);
+
+    detachPSM(bzip);
+    detachPSM(gcc);
 
     free(bzip);
     free(gcc);
