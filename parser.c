@@ -1,5 +1,9 @@
 #include "parser.h"
 
+extern int k;
+extern int q;
+extern int max;
+
 Request * createRequestArray(const char * file){
 
     // Alocate space for each memory access. For each memeory access
@@ -29,4 +33,22 @@ Request * createRequestArray(const char * file){
     fclose(stream);
 
     return requests;
+}
+
+// Manage command line arguments
+void manageArguments(int argc, char * argv[]){
+    if(argc < 3){
+        printf("Usage: ./a.out k q\n");
+        exit(0);
+    }
+
+    k = atoi(argv[1]);
+    q = atoi(argv[2]);
+    
+    max = 1000000;
+    if(argc == 4){
+        max = atoi(argv[3]);
+    }
+
+    if(q > max) q = max;
 }

@@ -1,40 +1,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "pageTable.h"
-#include "psm.h"
+#include "process.h"
 
+// Global variables for command line arguments
 int k;
 int q;
 int max;
-
-void process(PSM * output, const char * file, int max){
-    Request * trace = createRequestArray(file);
-
-    for(int i=0; i<max; i++){
-        semDown(output->semEmpty);
-            memcpy(output->sharedMemory,&trace[i],sizeof(Request));
-        semUp(output->semFull);
-    }
-
-    free(trace);
-}
-
-void manageArguments(int argc, char * argv[]){
-    if(argc < 3){
-        printf("Usage: ./a.out k q\n");
-        exit(0);
-    }
-
-    k = atoi(argv[1]);
-    q = atoi(argv[2]);
-    
-    max = 1000000;
-    if(argc == 4){
-        max = atoi(argv[3]);
-    }
-
-    if(q > max) q = max;
-}
 
 int main(int argc, char * argv[]){
     manageArguments(argc, argv);

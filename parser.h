@@ -8,3 +8,4 @@ typedef struct Request{
 } Request;
 
 Request * createRequestArray(const char * file);
+void manageArguments(int argc, char * argv[]);
