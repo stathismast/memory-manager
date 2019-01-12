@@ -20,12 +20,12 @@ PageTable * newPageTable(int size, int k){
 }
 
 void printPageTable(PageTable * pt){
-    for(int i=0; i<pt->size; i++){
-        printf("\n%d\n",i);
-        printList(pt->table[i]);
-    }
+    // for(int i=0; i<pt->size; i++){
+    //     printf("\n%d\n",i);
+    //     printList(pt->table[i]);
+    // }
 
-    printf("\nProcess\t\tReads\t\tWrites\t\tPage Faults\tFlushes\t\tWrite Backs\n");
+    printf("Process\t\tReads\t\tWrites\t\tPage Faults\tFlushes\t\tWrite Backs\n");
     printf("bzip\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", reads[0], writes[0], pageFaults[0], flushes[0], writeBacks[0]);
     printf("gcc\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", reads[1], writes[1], pageFaults[1], flushes[1], writeBacks[1]);
 }
@@ -47,7 +47,7 @@ void addToPageTable(PageTable * pt, int page, char rw, int pid){
         // printf("%d is not in index %d. Page fault.\n", page, index);
 
         if(pageFaults[pid] % pt->k == 0 && pageFaults[pid] != 0){
-            printf("Reached %d page faults for pid=%d. Flushing...\n", pageFaults[pid], pid);
+            // printf("Reached %d page faults for pid=%d. Flushing...\n", pageFaults[pid], pid);
             flushPageTable(pt, pid);
             // printPageTable(pt);
         }
