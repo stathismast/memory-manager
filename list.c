@@ -127,11 +127,19 @@ void deleteNodes(Node * node){
 
 // Delete the given list
 void deleteList(List * list){
-    if(list->first == NULL){
-        return;
-    }
-
-    deleteNodes(list->first);
-
+    clearList(list);
     free(list);
+}
+
+// Empty the contents of a given list
+void clearList(List * list){ 
+    if(list->first == NULL){ 
+        return; 
+    } 
+ 
+    deleteNodes(list->first); 
+
+    list->first = NULL; 
+    list->last = NULL; 
+    list->length = 0; 
 }

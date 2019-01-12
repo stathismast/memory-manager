@@ -24,3 +24,4 @@ int isInList(List * list, int page);
 void changeDirtyBit(List * list, int page);
 void deleteNodes(Node * node);
 void deleteList(List * list);
+void clearList(List * list);
