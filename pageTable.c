@@ -26,6 +26,7 @@ void printStats(PageTable * pt){
     printf("Process\t\tReads\t\tWrites\t\tPage Faults\tFlushes\t\tWrite Backs\n");
     printf("bzip\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", reads[0], writes[0], pageFaults[0], flushes[0], writeBacks[0]);
     printf("gcc\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", reads[1], writes[1], pageFaults[1], flushes[1], writeBacks[1]);
+    printf("Total\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", reads[0]+reads[1], writes[0]+writes[1], pageFaults[0]+pageFaults[1], flushes[0]+flushes[1], writeBacks[0]+writeBacks[1]);
 }
 
 // Go through all the lists containing pages and
