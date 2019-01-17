@@ -30,7 +30,7 @@ int main(int argc, char * argv[]){
     }
     
     // Create the hashed page table structure
-    PageTable * pt = newPageTable(10, k);
+    PageTable * pt = newPageTable(k);
 
     // Receive every memory access request and add it to the page table
     Request req;

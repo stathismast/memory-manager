@@ -8,13 +8,13 @@ int flushes[2] = {0};
 int writeBacks[2] = {0};
 
 // Create a new page table
-PageTable * newPageTable(int size, int k){
+PageTable * newPageTable(int k){
     PageTable * pt = malloc(sizeof(PageTable));
-    pt->size = size;
+    pt->size = k/2;
     pt->k = k;
 
-    pt->table = malloc(size * sizeof(List*));
-    for(int i=0; i<size; i++){
+    pt->table = malloc(pt->size * sizeof(List*));
+    for(int i=0; i<pt->size; i++){
         pt->table[i] = newList();
     }
 

@@ -6,7 +6,7 @@ typedef struct PageTable{
     int k;
 } PageTable;
 
-PageTable * newPageTable(int size, int k);
+PageTable * newPageTable(int k);
 void printStats(PageTable * pt);
 void flushPageTable(PageTable * pt, int pid);
 void addToPageTable(PageTable * pt, int page, char rw, int pid);
