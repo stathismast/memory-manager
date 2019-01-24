@@ -20,7 +20,7 @@ Node * copyNode(Node * original);
 void addToList(List * list, int part, char rw, int pid);
 void addNodeToList(List * list, Node * node);
 List * flushList(List * list, int pid);
-int isInList(List * list, int page);
+int isInList(List * list, int page, int pid);
 void changeDirtyBit(List * list, int page);
 void deleteNodes(Node * node);
 void deleteList(List * list);

@@ -45,7 +45,7 @@ void addToPageTable(PageTable * pt, int page, char rw, int pid){
     int index = (unsigned int) page % pt->size;
 
     // If the page that is requested is not present in the page table
-    if(!isInList(pt->table[index], page)){
+    if(!isInList(pt->table[index], page, pid)){
         
         // If we've reached the limit of 'k' page faults flush the
         // page table of all the pages that belong to this process

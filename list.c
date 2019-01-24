@@ -90,14 +90,14 @@ List * flushList(List * list, int pid){
 }
 
 // Check if a given page is present in a list
-int isInList(List * list, int page){
+int isInList(List * list, int page, int pid){
     if(list->first == NULL){
         return 0;
     }
 
     Node * node = list->first;
     while(node != NULL){
-        if(node->page == page) return 1;
+        if(node->page == page && node->pid == pid) return 1;
         node = node->next;
     }
 
